@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.geekcattle.model.message.Account;
 import com.geekcattle.model.message.AccountDetail;
+import com.geekcattle.model.message.Bank;
+import com.geekcattle.model.message.Total;
 import com.geekcattle.util.MsgUtil;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +87,54 @@ public class MessageService {
         return total;
     }
 
+    public Total getTotal() {
+        Total result = new Total();
+        String total = "";
+        String totalBalance = "0";
+        List<Bank> lbank = new ArrayList<>();
+        List<Account> lacc = new ArrayList<>();
+        Map<String,String> bank = new HashMap<String,String>();
+        for (String key : accounts.keySet()) {
+            List<Map<String,String>> value = accounts.get(key);
+            Map<String,String> lastvalue = value.get(value.size()-1);
+            float curr = 0.0f;
+            try {
+                curr = Float.valueOf(lastvalue.get("BALANCE"));
+            } catch (Exception ex) {}
+            totalBalance = new DecimalFormat("0.00").format(Float.valueOf(totalBalance) + curr);
+            String bankname = lastvalue.get("BANK");
+            if (bank.containsKey(bankname)) {
+                String balance = bank.get(bankname);
+                float curr1 = 0.0f;
+                try {
+                    curr1 = Float.valueOf(lastvalue.get("BALANCE"));
+                } catch (Exception ex) {}
+                balance =
+                        new DecimalFormat("0.00").format(Float.valueOf(balance) + curr1);
+                Bank _bank = new Bank();
+                _bank.setBankname(bankname);
+                _bank.setBalance(balance);
+                lbank.add(_bank);
+                bank.put(bankname,balance);
+            } else {
+                Bank _bank = new Bank();
+                _bank.setBankname(bankname);
+                _bank.setBalance(lastvalue.get("BALANCE"));
+                lbank.add(_bank);
+                bank.put(bankname, lastvalue.get("BALANCE"));
+            }
+            Account _acc = new Account();
+            _acc.setAccountno(key);
+            _acc.setBankname(bankname);
+            _acc.setBalance(lastvalue.get("BALANCE"));
+            lacc.add(_acc);
+        }
+        result.setBalance(totalBalance);
+        result.setBanks(lbank);
+        result.setAccounts(lacc);
+        return result;
+    }
+
     public Account getAccDetail(String account) {
         Account acc = new Account();
         acc.setAccountno(account);
@@ -148,6 +198,8 @@ public class MessageService {
         System.out.println(ser.getInfo());
         System.out.println(ser.getDetail("1302"));
         System.out.println(ser.getDetail("1303"));
+        Total total = ser.getTotal();
+        System.out.println(total);
     }
 
 }

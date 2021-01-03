@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.geekcattle.model.message.Account;
+import com.geekcattle.model.message.Total;
 import com.geekcattle.service.msg.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,6 +49,7 @@ public class MessageController {
             String paramVal = request.getParameter(paramId);
             params.put(paramId, paramVal);
         }
+        System.out.println(params);
         messageService.processMsg(params);
         return "success";
     }
@@ -67,6 +69,13 @@ public class MessageController {
     @RequestMapping(value = "/msg/balance",method = {RequestMethod.GET})
     public String getBalance(Model model) {
         return "message/balance";
+    }
+
+    @RequestMapping(value = "/msg/total",method = {RequestMethod.GET})
+    public String getTotal(Model model) {
+        Total total = messageService.getTotal();
+        model.addAttribute("total", total);
+        return "message/total";
     }
 
     @RequestMapping(value = "/msg/account/{accno}",method = {RequestMethod.GET})
