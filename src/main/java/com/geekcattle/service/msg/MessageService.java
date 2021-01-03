@@ -40,12 +40,20 @@ public class MessageService {
         for (String key : accounts.keySet()) {
             List<Map<String,String>> value = accounts.get(key);
             Map<String,String> lastvalue = value.get(value.size()-1);
-            totalBalance = new DecimalFormat("0.00").format(Float.valueOf(totalBalance) + Float.valueOf(lastvalue.get("BALANCE")));
+            float curr = 0.0f;
+            try {
+                curr = Float.valueOf(lastvalue.get("BALANCE"));
+            } catch (Exception ex) {}
+            totalBalance = new DecimalFormat("0.00").format(Float.valueOf(totalBalance) + curr);
             String bankname = lastvalue.get("BANK");
             if (bank.containsKey(bankname)) {
                 String balance = bank.get(bankname);
+                float curr1 = 0.0f;
+                try {
+                    curr1 = Float.valueOf(lastvalue.get("BALANCE"));
+                } catch (Exception ex) {}
                 balance =
-                        new DecimalFormat("0.00").format(Float.valueOf(balance) + Float.valueOf(lastvalue.get("BALANCE")));
+                        new DecimalFormat("0.00").format(Float.valueOf(balance) + curr1);
                 bank.put(bankname,balance);
             } else {
                 bank.put(bankname, lastvalue.get("BALANCE"));
