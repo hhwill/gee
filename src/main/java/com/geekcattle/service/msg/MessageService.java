@@ -16,9 +16,10 @@ public class MessageService {
 
     public static Map<String, List<Map<String,String>>> accounts = new HashMap<String, List<Map<String,String>>>();
 
-    public void processMsg(Map<String, String> value) {
+    public void processMsg(Map<String, String> src) {
         MsgUtil util = new MsgUtil();
         try {
+            Map<String,String> value = util.prase(src.get("msg").toString());
             String acctno = value.get("ACCNO");
             if (accounts.containsKey(acctno)) {
                 accounts.get(acctno).add(value);
@@ -137,6 +138,7 @@ public class MessageService {
         MessageService ser = new MessageService();
         System.out.println(ser.getInfo());
         String s1 = "贵公司尾号1302的账户9月15日16时59分ARAP对账系统2003-2008服务费收入人民币11100.00元，余额27597.33元。对方户名:莎莎化妆品(中国）有限公司。[建设银行]";
+        s1 = "贵公司尾号1302的账户9月15日16时59分ARAP对账系统2003-2008服务费收入人民币11100.00元，余额27597.33元。对方户名:莎莎化妆品(中国）有限公司。[建设银行]";
         MsgUtil util = new MsgUtil();
         Map<String,String> map = util.prase(s1);
         List<Map<String,String>> lst = new ArrayList<Map<String,String>>();
