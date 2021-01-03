@@ -213,6 +213,6 @@ spring:
       port : 6379
       password : Test123
 server:
-  port: 8001
+  port: 8000
 
 ---
