@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="console/header">
+</head>
+<body>
+<section class="content">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title" th:text="${account.accountno}"></h3>
+                </div>
+                <div class="box-body">
+                    <ul id="ulbank" class="list-group">
+                        <li class="treeview" th:each="detail:${account.details}">
+                            <b th:text="${detail.amount}"></b>
+                            <b th:text="${detail.type}"></b>
+                            <b th:text="${detail.opp}"></b>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:include="console/footer"></div>
+</body>
+</html>

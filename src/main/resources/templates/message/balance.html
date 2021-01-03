@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script type="text/javascript" src="https://echarts.apache.org/examples/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <style>
+        body{padding:50px;}
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+     getData();
+     function getData(url) {
+        $.ajax({
+            url : "/api/getInfo",
+            crossDomain: true,
+            type:'get',
+            success:function(value){
+                //alert(value);
+                var htmlbank = "";
+                var htmlacct = "";
+                var data = JSON.parse(value);
+                $('#total').prop('innerHTML',data.total);
+                for(var i=0;i<data.bankbalance.length;i++){
+                    htmlbank += '<li class="list-group-item">'+data.bankbalance[i].bankname + ':'+data.bankbalance[i]
+                    .balance+'</li>';
+                }
+                //alert(htmlbank);
+                for(var i=0;i<data.accountbalance.length;i++){
+                    htmlacct += "<li class='list-group-item'><a href='account/"
+                    +data.accountbalance[i].accountno+"'>"
+                    +data.accountbalance[i].accountno +
+                    ":"+data.accountbalance[i].balance+"</a></li>";
+                }
+                //alert(htmlacct);
+                $('#ulbank').prop('outerHTML', htmlbank);
+                $('#ulacct').prop('outerHTML', htmlacct);
+            }
+        });
+    }
+</script>
+<h3>总金额</h3>
+<h4 id="total"></h4>
+<ul id="ulbank" class="list-group">
+
+</ul>
+<ul id="ulacct" class="list-group">
+
+</ul>
+<div id="main" style="width: 400px;height:300px;"></div>
+<div id="rsi" style="width: 400px;height:400px;"></div>
+</body>
+</html>
