@@ -2,38 +2,46 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head th:include="console/header">
+    <style type="text/css">
+        table.table-striped tr:nth-child(odd){
+            background: #F4B084;
+        }
+        table.table-striped tr:nth-child(even) {
+            background: #F8CBAD;
+        }
+    </style>
 </head>
 <body>
-<section class="content">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title" th:text="${total.balance}"></h3>
-                </div>
-                <div class="box-body">
-                    <ul id="ulbank" class="list-group">
-                        <li class="treeview" th:each="bank:${total.banks}">
-                            <b th:text="${bank.bankname}"></b>
-                            <b th:text="${bank.balance}"></b>
-                        </li>
-                    </ul>
-                </div>
-                <div class="box-body">
-                    <ul id="ulacc" class="list-group">
-                        <li class="treeview" th:each="acct:${total.accounts}">
-                            <a th:href="${'account/'+acct.accountno}">
-                                <b th:text="${acct.bankname}"></b>
-                                <b th:text="${acct.accountno}"></b>
-                                <b th:text="${acct.balance}"></b>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+    <table width="100%" border="0">
+        <tr>
+            <td width="60%"><h2>当前总余额</h2></td>
+            <td rowspan="2"><h3 th:text="${total.time}"></h3></td>
+        </tr>
+        <tr>
+            <td>Total Balance Now</td>
+        </tr>
+        <tr>
+            <td colspan="2" ><h1 th:text="${'CNY: '+total.balance}"></h1></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h1 th:text="${'USD: '+total.ubalance}"></h1></td>
+        </tr>
+    </table>
+</nav>
+<table class="table table-striped">
+    <tr th:each="bank:${total.banks}">
+        <td width="70%"><h4 th:text="${bank.bankname}"/></td>
+        <td><h4 th:text="${bank.balance}"/></td>
+    <tr>
+</table>
+<table class="table table-striped">
+    <tr th:each="acct:${total.accounts}">
+        <td width="40%"><h4 th:text="${acct.bankname}"/></td>
+        <td width="30%"><a th:href="${'account/'+acct.accountno}"><h4 th:text="${acct.accountno}"/></a></td>
+        <td width="30%"><h4 th:text="${acct.balance}"/></td>
+    <tr>
+</table>
 <div th:include="console/footer"></div>
 </body>
 </html>

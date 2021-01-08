@@ -4,6 +4,16 @@ import java.util.List;
 
 public class Total {
     String balance;
+    String ubalance;
+
+    public String getUbalance() {
+        return ubalance;
+    }
+
+    public void setUbalance(String ubalance) {
+        this.ubalance = ubalance;
+    }
+
     List<Bank> banks;
     List<Account> accounts;
     String time;

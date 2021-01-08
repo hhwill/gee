@@ -134,6 +134,7 @@ public class MessageService {
             lacc.add(_acc);
         }
         result.setBalance(totalBalance);
+        result.setUbalance(new DecimalFormat("0.00").format(Float.valueOf(totalBalance)/6.5));
         result.setBanks(lbank);
         result.setAccounts(lacc);
         result.setTime(_time);
