@@ -6,6 +6,15 @@ public class Total {
     String balance;
     List<Bank> banks;
     List<Account> accounts;
+    String time;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getBalance() {
         return balance;

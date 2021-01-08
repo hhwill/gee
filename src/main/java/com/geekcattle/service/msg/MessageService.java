@@ -1,10 +1,8 @@
 package com.geekcattle.service.msg;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.geekcattle.model.message.Account;
 import com.geekcattle.model.message.AccountDetail;
@@ -16,12 +14,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageService {
 
+    public static String _time = "";
+
     public static Map<String, List<Map<String,String>>> accounts = new HashMap<String, List<Map<String,String>>>();
 
     public void processMsg(Map<String, String> src) {
         MsgUtil util = new MsgUtil();
         try {
             Map<String,String> value = util.prase(src.get("msg").toString());
+            String lastime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.parseLong(src.get("time"))));
+            value.put("TIME", lastime);
+            _time = lastime;
             String acctno = value.get("ACCNO");
             if (accounts.containsKey(acctno)) {
                 accounts.get(acctno).add(value);
@@ -91,6 +94,7 @@ public class MessageService {
         Total result = new Total();
         String total = "";
         String totalBalance = "0";
+        String time = "";
         List<Bank> lbank = new ArrayList<>();
         List<Account> lacc = new ArrayList<>();
         Map<String,String> bank = new HashMap<String,String>();
@@ -132,6 +136,7 @@ public class MessageService {
         result.setBalance(totalBalance);
         result.setBanks(lbank);
         result.setAccounts(lacc);
+        result.setTime(_time);
         return result;
     }
 
