@@ -130,15 +130,24 @@
             </div>
         </div>
     </div>
-    <ul class="ulList" th:each="bank:${total.banks}">
+    <!--<ul class="ulList" th:each="bank:${total.banks}">-->
+        <!--<li>-->
+            <!--<p class="list_l" th:text="${bank.bankname}"></p>-->
+            <!--<div class="list_r">-->
+                <!--<p th:text="'CNY:' + ${bank.balance}"></p>-->
+                <!--&lt;!&ndash;<span th:text="'USD:' + ${bank.ubalance}"></span>&ndash;&gt;-->
+            <!--</div>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <ul class="ulList" th:each="acct:${total.accounts}">
         <li>
-            <p class="list_l" th:text="${bank.bankname}"></p>
+            <p class="list_l" th:text="${acct.bankname}+'('+${acct.accountno}+')'" ></p>
             <div class="list_r">
-                <p th:text="'CNY:' + ${bank.balance}"></p>
+                <a th:href="${'account/'+acct.accountno}"></a>
+                <p th:text="'CNY:' + ${acct.balance}"></p>
                 <!--<span th:text="'USD:' + ${bank.ubalance}"></span>-->
             </div>
         </li>
-
     </ul>
 </body>
 
