@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>账单总览</title>
@@ -103,24 +105,19 @@
             <p class="total_t_r" id="date"></p>
         </div>
         <div class="total_b">
-            <p>Total CNY Amount: 1,245,678</p>
-            <p>Total USD Amount: 2,345,678</p>
+            <p th:text="${'Total CNY Amount: '+ total.balance}"></p>
+            <p th:text="${'Total USD Amount: '+ total.ubalance}"></p>
         </div>
     </div>
-    <ul class="ulList">
+    <ul class="ulList" th:each="bank:${total.banks}">
         <li>
-            <p class="list_l">工商银行<br>ICBC</p>
+            <p class="list_l" th:text="${bank.bankname}"></p>
             <p class="list_r">
-                <span>CNY:1,234,567</span>
-                <span>USD: 3,567</span>
+                <h th:text="'CNY:' + ${bank.balance}"></h>
+                <!--<span th:text="'USD:' + ${bank.ubalance}"></span>-->
             </p>
         </li>
-        <li>
-            <p class="list_l">工商银行<br>ICBC</p>
-            <p class="list_r">
-                <span>CNY:1,234,567</span>
-            </p>
-        </li>
+
     </ul>
 </body>
 

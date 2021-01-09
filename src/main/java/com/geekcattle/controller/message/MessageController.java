@@ -84,4 +84,11 @@ public class MessageController {
         model.addAttribute("account", account);
         return "message/account";
     }
+
+
+    @RequestMapping(value = "/msg/doMain",method = {RequestMethod.GET})
+    public String doMain() {
+        messageService.doMain();
+        return "success";
+    }
 }

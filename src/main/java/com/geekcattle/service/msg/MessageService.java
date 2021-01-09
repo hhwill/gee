@@ -210,4 +210,25 @@ public class MessageService {
         System.out.println(total);
     }
 
+    public void doMain() {
+        MessageService ser = new MessageService();
+        System.out.println(ser.getInfo());
+        String s1 = "贵公司尾号1302的账户9月15日16时59分ARAP对账系统2003-2008服务费收入人民币11100.00元，余额27597.33元。对方户名:莎莎化妆品(中国）有限公司。[建设银行]";
+        s1 = "贵公司尾号1302的账户9月15日16时59分ARAP对账系统2003-2008服务费收入人民币11100.00元，余额27597.33元。对方户名:莎莎化妆品(中国）有限公司。[建设银行]";
+        String s2 = "贵公司尾号1303的账户9月15日16时59分ARAP对账系统2003-2008服务费收入人民币11100.00元，余额27597.33元。对方户名:莎莎化妆品(中国）有限公司。[建设银行]";
+        MsgUtil util = new MsgUtil();
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("msg", s1);
+        map.put("time", "1610105768");
+        ser.processMsg(map);
+        map.put("msg", s2);
+        map.put("time", "1610105769");
+        ser.processMsg(map);
+
+        System.out.println(ser.getInfo());
+        System.out.println(ser.getDetail("1302"));
+        System.out.println(ser.getDetail("1303"));
+        Total total = ser.getTotal();
+        System.out.println(total);
+    }
 }
