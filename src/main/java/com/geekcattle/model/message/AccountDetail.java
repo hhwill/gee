@@ -44,8 +44,17 @@ public class AccountDetail {
         this.opp = opp;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     private String bankName;
     private String amount;
     private String type;
     private String opp;
+    private String time;
 }

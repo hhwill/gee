@@ -168,20 +168,20 @@
     </div>
 </div>
 <ul class="ulList">
-    <!--<li style="background: #67c23a">-->
-        <!--<p class="list_l" >工商银行<br>ICBC</p>-->
-        <!--<div class="list_r">-->
-            <!--<p>CNY:1,234,567</p>-->
+    <li style="background: #67c23a">
+        <p class="list_l" th:text="${account.bankname}"></p>
+        <div class="list_r">
+            <p th:text="'CNY:' + ${account.balance}"></p>
             <!--<p>USD: 3,567</p>-->
-        <!--</div>-->
-    <!--</li>-->
-    <!--<li style="background: #e6a23c">-->
-        <!--<p class="list_l" >昨日余额<br>ICBC</p>-->
-        <!--<div class="list_r">-->
-            <!--<p>CNY:1,234,567</p>-->
+        </div>
+    </li>
+    <li style="background: #e6a23c">
+        <p class="list_l" >昨日余额</p>
+        <div class="list_r">
+            <p th:text="'CNY:' + ${account.balance}"></p>
             <!--<p>USD: 3,567</p>-->
-        <!--</div>-->
-    <!--</li>-->
+        </div>
+    </li>
 </ul>
 <ul class="ulList1" th:each="detail:${account.details}">
     <li>
@@ -192,7 +192,7 @@
        </div>
         <div>
             <p th:text="${detail.opp}"></p>
-            <p>2020-09-01</p>
+            <p th:text="${detail.time}"></p>
             <p th:text="${detail.amount}"></p>
         </div>
     </li>

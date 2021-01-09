@@ -157,6 +157,10 @@ public class MessageService {
                ad.setBankName(detail.get("BANK").toString());
                ad.setOpp(detail.get("OPP").toString());
                ad.setType(detail.get("TYPE").toString());
+               ad.setTime(detail.get("TIME").toString());
+
+                acc.setBankname(ad.getBankName());
+
                details.add(ad);
             }
         }
