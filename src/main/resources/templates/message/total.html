@@ -87,7 +87,7 @@
             font-size: 14px;
             color: #666;
         }
-        .ulList li .list_r span{
+        .ulList li .list_r p{
             width: 100%;
             height: 30px;
             display: inline-block;
@@ -113,7 +113,7 @@
         <li>
             <p class="list_l" th:text="${bank.bankname}"></p>
             <p class="list_r">
-                <h th:text="'CNY:' + ${bank.balance}"></h>
+                <p th:text="'CNY:' + ${bank.balance}"></p>
                 <!--<span th:text="'USD:' + ${bank.ubalance}"></span>-->
             </p>
         </li>
