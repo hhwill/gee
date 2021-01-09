@@ -27,7 +27,7 @@
             float: left;
             padding: 0 20px;
             line-height: 25px;
-            font-size: 16px;
+            font-size: 14px;
             color: #fff;
         }
         .total_t .total_t_r{
@@ -45,12 +45,27 @@
         .total_b{
             height: 60px;
         }
-        .total_b p{
+        .total_b .pDiv{
+            height: 30px;
             line-height: 30px;
             padding: 0 20px;
             font-size: 14px;
             color: #a9a9a9;
             box-sizing: border-box;
+        }
+        .total_b .pDiv p{
+            width:45%;
+            height: 30px;
+            display: block;
+            float: left;
+            line-height: 30px;
+            font-size: 14px;
+            color: #a9a9a9;
+            box-sizing: border-box;
+        }
+        .total_b .pDiv p:last-child{
+            float: right;
+            text-align: right;
         }
         .ulList{
             list-style: none;
@@ -105,17 +120,23 @@
             <p class="total_t_r" id="date"></p>
         </div>
         <div class="total_b">
-            <p th:text="${'Total CNY Amount: '+ total.balance}"></p>
-            <p th:text="${'Total USD Amount: '+ total.ubalance}"></p>
+            <div class="pDiv">
+                <p>Total CNY Amount:></p>
+                <p th:text="${total.balance}"></p>
+            </div>
+            <div class="pDiv">
+                <p>Total USD Amount:></p>
+                <p th:text="${total.ubalance}"></p>
+            </div>
         </div>
     </div>
     <ul class="ulList" th:each="bank:${total.banks}">
         <li>
             <p class="list_l" th:text="${bank.bankname}"></p>
-            <p class="list_r">
+            <div class="list_r">
                 <p th:text="'CNY:' + ${bank.balance}"></p>
                 <!--<span th:text="'USD:' + ${bank.ubalance}"></span>-->
-            </p>
+            </div>
         </li>
 
     </ul>
