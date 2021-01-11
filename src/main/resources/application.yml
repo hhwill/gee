@@ -76,7 +76,7 @@ spring:
 #mybaties配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml,classpath:mapper/*/*.xml
-  type-aliases-package: com.geekcattle.model
+  type-aliases-package: com.geekcattle.model.msg
 
 #mapper配置
 mapper:

@@ -1,15 +1,30 @@
 package com.geekcattle.service.msg;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.geekcattle.mapper.msg.MsgAccountBalanceMapper;
+import com.geekcattle.mapper.msg.MsgShortInfoMapper;
 import com.geekcattle.model.message.Account;
 import com.geekcattle.model.message.AccountDetail;
 import com.geekcattle.model.message.Bank;
 import com.geekcattle.model.message.Total;
+import com.geekcattle.model.msg.MsgAccountBalance;
+import com.geekcattle.model.msg.MsgShortInfo;
+import com.geekcattle.util.BizccDateUtil;
+import com.geekcattle.util.DateStyle;
+import com.geekcattle.util.DateUtil;
 import com.geekcattle.util.MsgUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
+
+import javax.xml.crypto.Data;
 
 @Service
 public class MessageService {
@@ -18,24 +33,96 @@ public class MessageService {
 
     public static Map<String, List<Map<String,String>>> accounts = new HashMap<String, List<Map<String,String>>>();
 
+    @Autowired
+    private MsgShortInfoMapper msgShortInfoMapper;
+
+    @Autowired
+    private MsgAccountBalanceMapper msgAccountBalanceMapper;
+
     public void processMsg(Map<String, String> src) {
         MsgUtil util = new MsgUtil();
-        try {
-            Map<String,String> value = util.prase(src.get("msg").toString());
-            String lastime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.parseLong(src.get("time"))));
-            value.put("TIME", lastime);
-            _time = lastime;
-            String acctno = value.get("ACCNO");
-            if (accounts.containsKey(acctno)) {
-                accounts.get(acctno).add(value);
-            } else {
-                List<Map<String,String>> lst = new ArrayList<Map<String,String>>();
-                lst.add(value);
-                accounts.put(acctno, lst);
-            }
-        } catch (Exception ex) {
+        Map<String,String> value = util.prase(src.get("msg").toString());
+        String lastime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.parseLong(src.get("time"))));
+        value.put(MsgUtil.TIME, lastime);
+        value.put(MsgUtil.UUID, src.get("uuid").toString());
+        value.put(MsgUtil.PHONE, src.get("phone").toString());
 
+
+        //昨天
+        Date thisTime = BizccDateUtil.StringToDate(lastime, DateStyle.YYYY_MM_DD_HH_MM_SS);
+//        Date yesterdayTmp = BizccDateUtil.addDay(thisTime,-1);
+        String yesterdayStr = BizccDateUtil.DateToString(thisTime,DateStyle.YYYY_MM_DD);
+        Date yesterday = BizccDateUtil.StringToDate(yesterdayStr + "00:00:00",DateStyle.YYYY_MM_DD_HH_MM_SS);
+
+        //入库信息表
+        MsgShortInfo info = util.getMsgShortInfo(value);
+        msgShortInfoMapper.insert(info);
+
+        //如果数据正确，跟新账户表
+        if(StringUtils.equals(util.T,info.getDataStatus())){
+            Example example = new Example(MsgAccountBalance.class);
+            example.createCriteria().andCondition("info_sender = ", info.getInfoSender())
+                    .andCondition("info_receive_key = ", info.getInfoReceiveKey())
+                    .andCondition("info_account_num = ", info.getInfoAccountNum())
+                    .andCondition("data_status = ",info.getDataStatus());
+            List<MsgAccountBalance> msgAccountBalances = msgAccountBalanceMapper.selectByExample(example);//仅一条数据
+            if(CollectionUtils.isNotEmpty(msgAccountBalances)){
+                MsgAccountBalance upd = msgAccountBalances.get(0);
+                upd.setInfoBalance(info.getInfoBalance());
+                msgAccountBalanceMapper.updateByPrimaryKey(upd);
+            }else {
+                MsgAccountBalance ins = new MsgAccountBalance();
+                ins.setAccountId(RandomStringUtils.randomAlphanumeric( 16 ));
+                ins.setInfoId(info.getInfoId());
+                ins.setInfoSender(info.getInfoSender());
+                ins.setInfoReceiveKey(info.getInfoReceiveKey());
+                ins.setInfoAccountNum(info.getInfoAccountNum());
+                ins.setInfoOpp(info.getInfoOpp());
+                ins.setInfoBankName(info.getInfoBankName());
+                ins.setInfoBalance(info.getInfoBalance());
+                ins.setDataStatus(info.getDataStatus());
+                ins.setInsertTime(new Date());
+
+                //计算昨天余额
+                Example msgShortInfoExample = new Example(MsgShortInfo.class);
+                msgShortInfoExample.createCriteria().andCondition("info_sender = ", info.getInfoSender())
+                        .andCondition("info_receive_key = ", info.getInfoReceiveKey())
+                        .andCondition("info_account_num = ", info.getInfoAccountNum())
+                        .andCondition("data_status = ",info.getDataStatus())
+                        .andLessThan("insert_time",yesterday)
+                ;
+                msgShortInfoExample.orderBy("insert_time desc");
+                List<MsgShortInfo> msgShortInfos = msgShortInfoMapper.selectByExample(msgShortInfoExample);
+                if(CollectionUtils.isNotEmpty(msgShortInfos)){
+                    ins.setLastBalance(msgShortInfos.get(0).getInfoBalance());
+                }else {
+                    ins.setLastBalance(BigDecimal.ZERO);
+                }
+                msgAccountBalanceMapper.insert(ins);
+            }
         }
+
+
+
+
+        //update by yinghui.li 2021年1月11日21点12分  以下为历史逻辑
+//        MsgUtil util = new MsgUtil();
+//        try {
+//            Map<String,String> value = util.prase(src.get("msg").toString());
+//            String lastime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.parseLong(src.get("time"))));
+//            value.put("TIME", lastime);
+//            _time = lastime;
+//            String acctno = value.get("ACCNO");
+//            if (accounts.containsKey(acctno)) {
+//                accounts.get(acctno).add(value);
+//            } else {
+//                List<Map<String,String>> lst = new ArrayList<Map<String,String>>();
+//                lst.add(value);
+//                accounts.put(acctno, lst);
+//            }
+//        } catch (Exception ex) {
+//
+//        }
     }
 //{ACCNO=1325, BANK=中国银行, AMOUNT=50000.00, TYPE=PAYOUT, OPP=, BALANCE=43671.49}
     public String getInfo() {
@@ -226,9 +313,13 @@ public class MessageService {
         Map<String,String> map = new HashMap<String,String>();
         map.put("msg", s1);
         map.put("time", "1610105768");
+        map.put("uuid", "111111");
+        map.put("phone", "111111");
         ser.processMsg(map);
         map.put("msg", s2);
         map.put("time", "1610105769");
+        map.put("uuid", "111111");
+        map.put("phone", "111111");
         ser.processMsg(map);
 
         System.out.println(ser.getInfo());

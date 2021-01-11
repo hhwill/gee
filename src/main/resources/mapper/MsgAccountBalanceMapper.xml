@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.geekcattle.mapper.msg.MsgAccountBalanceMapper" >
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.msg.MsgAccountBalance" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="account_id" property="accountId" jdbcType="VARCHAR" />
+    <result column="info_id" property="infoId" jdbcType="VARCHAR" />
+    <result column="info_sender" property="infoSender" jdbcType="VARCHAR" />
+    <result column="info_receive_key" property="infoReceiveKey" jdbcType="VARCHAR" />
+    <result column="info_account_num" property="infoAccountNum" jdbcType="VARCHAR" />
+    <result column="info_opp" property="infoOpp" jdbcType="VARCHAR" />
+    <result column="info_bank_name" property="infoBankName" jdbcType="VARCHAR" />
+    <result column="info_balance" property="infoBalance" jdbcType="DECIMAL" />
+    <result column="last_balance" property="lastBalance" jdbcType="DECIMAL" />
+    <result column="data_status" property="dataStatus" jdbcType="VARCHAR" />
+    <result column="insert_time" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>
