@@ -49,13 +49,6 @@ public class MessageService {
         value.put(MsgUtil.UUID, src.get("uuid").toString());
         value.put(MsgUtil.PHONE, src.get("phone").toString());
 
-
-        //昨天
-        Date thisTime = BizccDateUtil.StringToDate(lastime, DateStyle.YYYY_MM_DD_HH_MM_SS);
-//        Date yesterdayTmp = BizccDateUtil.addDay(thisTime,-1);
-        String yesterdayStr = BizccDateUtil.DateToString(thisTime,DateStyle.YYYY_MM_DD);
-        Date yesterday = BizccDateUtil.StringToDate(yesterdayStr + "00:00:00",DateStyle.YYYY_MM_DD_HH_MM_SS);
-
         //入库信息表
         MsgShortInfo info = util.getMsgShortInfo(value);
         msgShortInfoMapper.insert(info);
@@ -71,6 +64,8 @@ public class MessageService {
             if(CollectionUtils.isNotEmpty(msgAccountBalances)){
                 MsgAccountBalance upd = msgAccountBalances.get(0);
                 upd.setInfoBalance(info.getInfoBalance());
+                //计算昨天余额
+                setLastBalance(upd,info,lastime);
                 msgAccountBalanceMapper.updateByPrimaryKey(upd);
             }else {
                 MsgAccountBalance ins = new MsgAccountBalance();
@@ -84,22 +79,8 @@ public class MessageService {
                 ins.setInfoBalance(info.getInfoBalance());
                 ins.setDataStatus(info.getDataStatus());
                 ins.setInsertTime(new Date());
-
                 //计算昨天余额
-                Example msgShortInfoExample = new Example(MsgShortInfo.class);
-                msgShortInfoExample.createCriteria().andCondition("info_sender = ", info.getInfoSender())
-                        .andCondition("info_receive_key = ", info.getInfoReceiveKey())
-                        .andCondition("info_account_num = ", info.getInfoAccountNum())
-                        .andCondition("data_status = ",info.getDataStatus())
-                        .andCondition("insert_time < ",yesterday)
-                ;
-                msgShortInfoExample.setOrderByClause("insert_time desc");
-                List<MsgShortInfo> msgShortInfos = msgShortInfoMapper.selectByExample(msgShortInfoExample);
-                if(CollectionUtils.isNotEmpty(msgShortInfos)){
-                    ins.setLastBalance(msgShortInfos.get(0).getInfoBalance());
-                }else {
-                    ins.setLastBalance(BigDecimal.ZERO);
-                }
+                setLastBalance(ins,info,lastime);
                 msgAccountBalanceMapper.insert(ins);
             }
         }
@@ -126,7 +107,31 @@ public class MessageService {
 //
 //        }
     }
-//{ACCNO=1325, BANK=中国银行, AMOUNT=50000.00, TYPE=PAYOUT, OPP=, BALANCE=43671.49}
+
+    private void setLastBalance(MsgAccountBalance msgAccountBalance, MsgShortInfo info,String lastime) {
+        //昨天
+        Date thisTime = BizccDateUtil.StringToDate(lastime, DateStyle.YYYY_MM_DD_HH_MM_SS);
+//        Date yesterdayTmp = BizccDateUtil.addDay(thisTime,-1);
+        String yesterdayStr = BizccDateUtil.DateToString(thisTime,DateStyle.YYYY_MM_DD);
+        Date yesterday = BizccDateUtil.StringToDate(yesterdayStr + "00:00:00",DateStyle.YYYY_MM_DD_HH_MM_SS);
+
+        Example msgShortInfoExample = new Example(MsgShortInfo.class);
+        msgShortInfoExample.createCriteria().andCondition("info_sender = ", info.getInfoSender())
+                .andCondition("info_receive_key = ", info.getInfoReceiveKey())
+                .andCondition("info_account_num = ", info.getInfoAccountNum())
+                .andCondition("data_status = ",info.getDataStatus())
+                .andCondition("insert_time < ",yesterday)
+        ;
+        msgShortInfoExample.setOrderByClause("insert_time desc");
+        List<MsgShortInfo> msgShortInfos = msgShortInfoMapper.selectByExample(msgShortInfoExample);
+        if(CollectionUtils.isNotEmpty(msgShortInfos)){
+            msgAccountBalance.setLastBalance(msgShortInfos.get(0).getInfoBalance());
+        }else {
+            msgAccountBalance.setLastBalance(BigDecimal.ZERO);
+        }
+    }
+
+    //{ACCNO=1325, BANK=中国银行, AMOUNT=50000.00, TYPE=PAYOUT, OPP=, BALANCE=43671.49}
     public String getInfo() {
         String total = "";
         String totalBalance = "0";
