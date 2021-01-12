@@ -22,6 +22,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.xml.crypto.Data;
@@ -39,6 +40,7 @@ public class MessageService {
     @Autowired
     private MsgAccountBalanceMapper msgAccountBalanceMapper;
 
+    @Transactional
     public void processMsg(Map<String, String> src) {
         MsgUtil util = new MsgUtil();
         Map<String,String> value = util.prase(src.get("msg").toString());
@@ -72,7 +74,7 @@ public class MessageService {
                 msgAccountBalanceMapper.updateByPrimaryKey(upd);
             }else {
                 MsgAccountBalance ins = new MsgAccountBalance();
-                ins.setAccountId(RandomStringUtils.randomAlphanumeric( 16 ));
+                ins.setAccountId(RandomStringUtils.randomAlphanumeric( 8 ));
                 ins.setInfoId(info.getInfoId());
                 ins.setInfoSender(info.getInfoSender());
                 ins.setInfoReceiveKey(info.getInfoReceiveKey());
@@ -89,9 +91,9 @@ public class MessageService {
                         .andCondition("info_receive_key = ", info.getInfoReceiveKey())
                         .andCondition("info_account_num = ", info.getInfoAccountNum())
                         .andCondition("data_status = ",info.getDataStatus())
-                        .andLessThan("insert_time",yesterday)
+                        .andCondition("insert_time < ",yesterday)
                 ;
-                msgShortInfoExample.orderBy("insert_time desc");
+                msgShortInfoExample.setOrderByClause("insert_time desc");
                 List<MsgShortInfo> msgShortInfos = msgShortInfoMapper.selectByExample(msgShortInfoExample);
                 if(CollectionUtils.isNotEmpty(msgShortInfos)){
                     ins.setLastBalance(msgShortInfos.get(0).getInfoBalance());

@@ -88,7 +88,7 @@ public class MessageController {
 
     @RequestMapping(value = "/msg/doMain",method = {RequestMethod.GET})
     public String doMain() {
-        messageService.doMain();
+//        messageService.doMain();
         return "success";
     }
 }

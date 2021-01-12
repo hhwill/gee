@@ -186,7 +186,7 @@ spring:
       name : geekcattle_dev
       username  : root
       password  : root1234
-      url : jdbc:mysql://47.92.210.37:3306/geekcattle?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      url : jdbc:mysql://47.92.210.37:3306/geekcattle_dev?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   redis:
     database : 0
     host : 47.92.210.37
