@@ -1,8 +1,16 @@
 package com.geekcattle.model.message;
 
+import java.math.BigDecimal;
+
 public class AccountDetail {
 
-    private String accountNo;
+    private String accountNo;//账号后4位
+    private String bankName;//银行名称
+    private BigDecimal amount;//交易金额
+    private BigDecimal balance;//余额
+    private String type;//收入、支出
+    private String opp;//付款方等信息
+    private String time;//交易时间
 
     public String getAccountNo() {
         return accountNo;
@@ -20,12 +28,20 @@ public class AccountDetail {
         this.bankName = bankName;
     }
 
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     public String getType() {
@@ -52,9 +68,5 @@ public class AccountDetail {
         this.time = time;
     }
 
-    private String bankName;
-    private String amount;
-    private String type;
-    private String opp;
-    private String time;
+
 }

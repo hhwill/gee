@@ -1,22 +1,34 @@
 package com.geekcattle.model.message;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Account {
-    String balance;
-    String accountno;
-    String bankname;
+    BigDecimal balance;//余额
+    BigDecimal ubalance;//美元余额
+    String accountno;//账号后4位
+    String bankname;//银行名称
+    String accountId;//系统内部账号ID
+    List<AccountDetail> details;
 
     public Account() {
 
     }
 
-    public String getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public BigDecimal getUbalance() {
+        return ubalance;
+    }
+
+    public void setUbalance(BigDecimal ubalance) {
+        this.ubalance = ubalance;
     }
 
     public String getAccountno() {
@@ -35,6 +47,14 @@ public class Account {
         this.bankname = bankname;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
     public List<AccountDetail> getDetails() {
         return details;
     }
@@ -43,5 +63,5 @@ public class Account {
         this.details = details;
     }
 
-    List<AccountDetail> details;
+
 }
