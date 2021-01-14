@@ -293,7 +293,11 @@ public class MessageService {
                 accountDetail.setBalance(msgShortInfo.getInfoBalance());
                 accountDetail.setType(msgShortInfo.getInfoType());
                 accountDetail.setOpp(msgShortInfo.getInfoOpp());
-                accountDetail.setTime(msgShortInfo.getInfoTime());
+
+                String time = msgShortInfo.getInfoTime();
+                String date = BizccDateUtil.StringToString(time,DateStyle.YYYY_MM_DD_HH_MM_SS,DateStyle.YYYY_MM_DD);
+
+                accountDetail.setTime(date);
                 details.add(accountDetail);
             }
             account.setDetails(details);
