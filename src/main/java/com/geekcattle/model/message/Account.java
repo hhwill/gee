@@ -6,6 +6,9 @@ import java.util.List;
 public class Account {
     BigDecimal balance;//余额
     BigDecimal ubalance;//美元余额
+    BigDecimal lbalance;//昨日余额
+
+
     String accountno;//账号后4位
     String bankname;//银行名称
     String accountId;//系统内部账号ID
@@ -13,6 +16,14 @@ public class Account {
 
     public Account() {
 
+    }
+
+    public BigDecimal getLbalance() {
+        return lbalance;
+    }
+
+    public void setLbalance(BigDecimal lbalance) {
+        this.lbalance = lbalance;
     }
 
     public BigDecimal getBalance() {

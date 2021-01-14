@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>明细查看</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .total{
+            background: #4e6ef2;
+        }
+        .total_t{
+            height: 80px;
+            padding: 15px 0;
+            box-sizing: border-box;
+        }
+        .total_t .total_t_l{
+            width: 45%;
+            box-sizing: border-box;
+            height: 50px;
+            display: block;
+            float: left;
+            padding: 0 20px;
+            line-height: 25px;
+            font-size: 14px;
+            color: #fff;
+        }
+        .total_t .total_t_r{
+            width: 55%;
+            box-sizing: border-box;
+            height: 50px;
+            display: block;
+            float: right;
+            padding: 0 20px;
+            line-height: 50px;
+            font-size: 12px;
+            text-align: right;
+            color: #fff;
+        }
+        .total_b{
+            height: 60px;
+        }
+        .total_b .pDiv{
+            height: 30px;
+            line-height: 30px;
+            padding: 0 20px;
+            font-size: 14px;
+            color: #a9a9a9;
+            box-sizing: border-box;
+        }
+        .total_b .pDiv p{
+            width:45%;
+            height: 30px;
+            display: block;
+            float: left;
+            line-height: 30px;
+            font-size: 14px;
+            color: #a9a9a9;
+            box-sizing: border-box;
+        }
+        .total_b .pDiv p:last-child{
+            float: right;
+            text-align: right;
+        }
+        .ulList{
+            list-style: none;
+        }
+        .ulList li:nth-of-type(odd){
+            height: 60px;
+            display: block;
+            box-sizing: border-box;
+            padding: 0 20px;
+            background: #fff;
+        }
+        .ulList li:nth-of-type(even){
+            height: 60px;
+            display: block;
+            box-sizing: border-box;
+            padding: 0 20px;
+            background: #f5f5f5;
+        }
+        .ulList li .list_l{
+            width: 30%;
+            height: 60px;
+            display: block;
+            float: left;
+            line-height: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+        .ulList li .list_r{
+            width: 65%;
+            height: 60px;
+            display: block;
+            float: right;
+            line-height: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+        .ulList li .list_r p{
+            width: 100%;
+            height: 30px;
+            display: inline-block;
+            line-height: 30px;
+            font-size: 14px;
+            color: #666;
+            text-align: right;
+        }
+        .ulList1{
+            list-style: none;
+        }
+        .ulList1 li:nth-of-type(odd){
+            height: 60px;
+            display: block;
+            box-sizing: border-box;
+            padding: 0 20px;
+            background: #fff;
+        }
+        .ulList1 li:nth-of-type(even){
+            height: 60px;
+            display: block;
+            box-sizing: border-box;
+            padding: 0 20px;
+            background: #f5f5f5;
+        }
+        .ulList1 li div {
+            height: 30px;
+
+        }
+        .ulList1 li div p{
+            width: 30%;
+            height: 30px;
+            display: block;
+            float: left;
+            line-height: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+        .ulList1 li div p:nth-of-type(2){
+            width: 35%;
+        }
+        .ulList1 li div p:last-child{
+            width: 35%;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<div class="total">
+    <div class="total_t">
+        <p class="total_t_l">当前总余额<br>Total Balance Now</p>
+        <p class="total_t_r" id="date"></p>
+    </div>
+    <div class="total_b">
+        <div class="pDiv">
+            <p>Total CNY Amount:</p>
+            <p id="total_cny_amount"></p>
+        </div>
+        <div class="pDiv">
+            <p>Total USD Amount:</p>
+            <p id="total_usd_amount"></p>
+        </div>
+    </div>
+</div>
+<ul class="ulList">
+    <li style="background: #67c23a">
+        <p class="list_l" id="bankname"></p>
+        <div class="list_r">
+            <p id="total_cny_amount2"></p>
+            <p id="total_usd_amount2"></p>
+        </div>
+    </li>
+    <li style="background: #e6a23c">
+        <p class="list_l" >昨日余额</p>
+        <div class="list_r">
+            <p id="total_cny_amount3"></p>
+            <p id="total_usd_amount3">USD: 0</p>
+        </div>
+    </li>
+</ul>
+<ul class="ulList1" id = "li_details">
+    <li>
+        <div>
+            <p>付款人</p>
+            <p>付款时间</p>
+            <p>金额</p>
+        </div>
+        <div>
+            <p>李松</p>
+            <p>2020-09-01</p>
+            <p>4,567</p>
+        </div>
+    </li>
+    <li>
+        <div>
+            <p>付款人</p>
+            <p>付款时间</p>
+            <p>金额</p>
+        </div>
+        <div>
+            <p>李松</p>
+            <p>2020-09-01</p>
+            <p>4,567</p>
+        </div>
+    </li>
+</ul>
+</body>
+
+<script>
+    setInterval(function(){
+            var date=new Date();
+            var year=date.getFullYear(); //获取当前年份
+            var mon=date.getMonth()+1; //获取当前月份
+            var da=date.getDate(); //获取当前日
+            var day=date.getDay(); //获取当前星期几
+            var h=date.getHours(); //获取小时
+            var m=date.getMinutes(); //获取分钟
+            var s=date.getSeconds(); //获取秒
+            var d=document.getElementById('date');
+            d.innerHTML=year+'年'+mon+'月'+da+'日'+' '+h+':'+m+':'+s; },
+        1000)
+
+    var accountId = getQueryVariable("accountId");
+
+    $.post("/gee/msg/account.json",{
+        accountId:accountId
+    }, function(result) {
+        console.log(result)
+        var res  = result.result;
+        $("#total_cny_amount").html(res.balance);
+        $("#total_usd_amount").html(res.ubalance);
+        $("#bankname").html(res.bankname);
+        $("#total_cny_amount2").html("CNY:"+res.balance);
+        $("#total_usd_amount2").html("USD:"+res.ubalance);
+        $("#total_cny_amount3").html("CNY:"+res.lbalance);
+
+
+        var details = res.details;
+        var detailsHtml= "";
+
+        for (var i=0;i<details.length;i++) {
+            var detail = details[i];
+
+            detailsHtml += "<li>";
+            detailsHtml += "<div>";
+            detailsHtml += "<p>付款人</p>";
+            detailsHtml += "<p>付款时间</p>";
+            detailsHtml += "<p>金额</p>";
+            detailsHtml += "</div>";
+            detailsHtml += "<div>";
+            detailsHtml += "<p>"+detail.opp+"</p>";
+            detailsHtml += "<p>"+detail.time+"</p>";
+            detailsHtml += "<p>"+detail.balance+"</p>";
+            detailsHtml += "</div>";
+            detailsHtml += "</li>";
+        }
+
+        $("#li_details").html(detailsHtml);
+
+    });
+
+
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+
+    //    $(".ulList").on("click","li",function(){
+    //        window.location.href = 'account.html'
+    //    })
+</script>
+</html>

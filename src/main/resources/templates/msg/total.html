@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>账单总览</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
     <style type="text/css">
         *{
             margin: 0;
@@ -103,24 +104,24 @@
         <p class="total_t_r" id="date"></p>
     </div>
     <div class="total_b">
-        <p>Total CNY Amount: 1,245,678</p>
-        <p>Total USD Amount: 2,345,678</p>
+        <p id="total_cny_amount"></p>
+        <p id="total_usd_amount"></p>
     </div>
 </div>
-<ul class="ulList">
-    <li>
-        <p class="list_l">工商银行<br>ICBC</p>
-        <p class="list_r">
-            <span>CNY:1,234,567</span>
-            <span>USD: 3,567</span>
-        </p>
-    </li>
-    <li>
-        <p class="list_l">工商银行<br>ICBC</p>
-        <p class="list_r">
-            <span>CNY:1,234,567</span>
-        </p>
-    </li>
+<ul class="ulList" id="li_accounts">
+    <!--<li>-->
+        <!--<p class="list_l">工商银行<br>ICBC</p>-->
+        <!--<p class="list_r" onclick="goAccount('111')">-->
+            <!--<span>CNY:1,234,567</span>-->
+            <!--<span>USD: 3,567</span>-->
+        <!--</p>-->
+    <!--</li>-->
+    <!--<li>-->
+        <!--<p class="list_l">工商银行<br>ICBC</p>-->
+        <!--<p class="list_r">-->
+            <!--<span>CNY:1,234,567</span>-->
+        <!--</p>-->
+    <!--</li>-->
 </ul>
 </body>
 
@@ -137,5 +138,37 @@
             var d=document.getElementById('date');
             d.innerHTML=year+'年'+mon+'月'+da+'日'+' '+h+':'+m+':'+s; },
         1000)
+
+    $.post("/gee/msg/total.json", function(data) {
+        console.log(data);
+        var res = data.result;
+
+        $("#total_cny_amount").html("Total CNY Amount: " + res.balance);
+        $("#total_usd_amount").html("Total USD Amount: " + res.ubalance);
+
+        var accounts = res.accounts;
+        var accountsHtml= "";
+
+        for (var i=0;i<accounts.length;i++) {
+            var account = accounts[i];
+
+            accountsHtml += "<li>";
+            accountsHtml += "<p class=\"list_l\" id='"+account.accountId+"' onclick='goAccount(this)'>"+account.bankname+"</p>";
+            accountsHtml += "<p class=\"list_r\">";
+            accountsHtml += "<span>CNY:"+account.balance+"</span>";
+            accountsHtml += "<span>USD:"+account.ubalance+"</span>";
+            accountsHtml += "</p>";
+            accountsHtml += "</li>";
+        }
+        $("#li_accounts").html(accountsHtml);
+    });
+
+
+    function goAccount(obj) {
+        var accountId = $(obj).attr("id");
+        window.location = "/gee/msg/account.html?accountId=" + accountId;
+    }
+
+
 </script>
 </html>

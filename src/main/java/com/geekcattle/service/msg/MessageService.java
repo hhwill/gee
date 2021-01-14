@@ -273,7 +273,7 @@ public class MessageService {
             account.setBalance(msgAccountBalance.getInfoBalance());
             account.setUbalance(BigDecimal.ZERO);
             account.setAccountId(msgAccountBalance.getAccountId());
-
+            account.setLbalance(msgAccountBalance.getLastBalance());
             //组装明细
             Example msgShortInfoExample = new Example(MsgShortInfo.class);
             msgShortInfoExample.createCriteria().andCondition("info_sender = ", msgAccountBalance.getInfoSender())
