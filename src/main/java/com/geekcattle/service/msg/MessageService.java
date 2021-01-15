@@ -195,11 +195,14 @@ public class MessageService {
         Total result = new Total();
 
         BigDecimal balance = BigDecimal.ZERO;
+        String time = "";
         for(MsgAccountBalance msgAccountBalance : msgAccountBalances){
             balance = balance.add(msgAccountBalance.getInfoBalance());
+            time = BizccDateUtil.DateToString(msgAccountBalance.getInsertTime(),DateStyle.YYYY_MM_DD_HH_MM_SS);
         }
         result.setBalance(balance);
         result.setUbalance(BigDecimal.ZERO);
+        result.setTime(time);
 
         List<Account> accounts = new ArrayList<>();
         for(MsgAccountBalance msgAccountBalance : msgAccountBalances){
@@ -274,6 +277,7 @@ public class MessageService {
             account.setUbalance(BigDecimal.ZERO);
             account.setAccountId(msgAccountBalance.getAccountId());
             account.setLbalance(msgAccountBalance.getLastBalance());
+            account.setTime(BizccDateUtil.DateToString(msgAccountBalance.getInsertTime(),DateStyle.YYYY_MM_DD_HH_MM_SS));
             //组装明细
             Example msgShortInfoExample = new Example(MsgShortInfo.class);
             msgShortInfoExample.createCriteria().andCondition("info_sender = ", msgAccountBalance.getInfoSender())

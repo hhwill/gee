@@ -41,10 +41,11 @@ public class TextPraser {
         return false;
     }
 
-    public String s1 = "贵公司尾号1302的账户9月15日16时59分ARAP对账系统2003-2008服务费收入人民币11100.00元，余额27597.33元。对方户名:莎莎化妆品(中国）有限公司。[建设银行]";
-    public String s2 = "贵公司尾号1302的账户10月9日12时56分报销支出人民币15000.00元，余额26390.99元。对方户名:陈建。[建设银行]";
-    public String s3 = "您公司账户1325,于1203 1315收入(其他小额)人民币25000.00当前余额68671.49,对方为上海鑫卡源供应链管理有限公司(账号*3364)【中国银行】";
-    public String s4 = "您公司账户1325,于1130 1139支取(柜台现金)人民币50000.00当前余额43671.49【中国银行】";
+//    public String s1 = "贵公司尾号1302的账户9月15日16时59分ARAP对账系统2003-2008服务费收入人民币11100.00元，余额27597.33元。对方户名:莎莎化妆品(中国）有限公司。[建设银行]";
+    public String s1 = "贵公司尾号1302的账户9月15日16时59分租赁费收入人民币100.00元，余额10000元。对方户名:香奈儿化妆品(中国）有限公司。[建设银行]";
+//    public String s2 = "贵公司尾号1302的账户10月9日12时56分报销支出人民币15000.00元，余额26390.99元。对方户名:陈建。[建设银行]";
+//    public String s3 = "您公司账户1325,于1203 1315收入(其他小额)人民币25000.00当前余额68671.49,对方为上海鑫卡源供应链管理有限公司(账号*3364)【中国银行】";
+//    public String s4 = "您公司账户1325,于1130 1139支取(柜台现金)人民币50000.00当前余额43671.49【中国银行】";
 
     public Map<String,String> prase(String src) {
         if (src.indexOf("收入")>= 0 && src.indexOf("支取") < 0 && src.indexOf("支出") < 0) {
@@ -122,14 +123,14 @@ public class TextPraser {
         String s = p.s1;
         Map<String,String> ss = p.prase(s);
         System.out.println(ss);
-        s = p.s2;
-        ss = p.prase(s);
-        System.out.println(ss);
-        s = p.s3;
-        ss = p.prase(s);
-        System.out.println(ss);
-        s = p.s4;
-        ss = p.prase(s);
+////        s = p.s2;
+//        ss = p.prase(s);
+//        System.out.println(ss);
+////        s = p.s3;
+//        ss = p.prase(s);
+//        System.out.println(ss);
+////        s = p.s4;
+//        ss = p.prase(s);
         System.out.println(ss);
         String s2 = URLEncoder.encode(s, "UTF-8");
         System.out.println(s2);
@@ -140,10 +141,11 @@ public class TextPraser {
         System.out.println(s4);
         ss.put("msg", p.s1);
         ss.put("time", "1610105768");
-        ss.put("uuid", "111111");
-        ss.put("phone", "111111");
+        ss.put("uuid", "18721532906");
+        ss.put("phone", "18721532906");
 //        boolean a = p.sendPostRequest("http://119.27.173.165:8000/uploadMsg",ss, "UTF-8");
-        boolean a = p.sendPostRequest("http://127.0.0.1:8000/gee/uploadMsg",ss, "UTF-8");
+//        boolean a = p.sendPostRequest("http://127.0.0.1:8000/gee/uploadMsg",ss, "UTF-8");
+        boolean a = p.sendPostRequest("https://www.arapnet.com/gee/uploadMsg",ss, "UTF-8");
         System.out.println(a);
     }
 }

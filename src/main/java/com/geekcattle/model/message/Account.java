@@ -7,7 +7,7 @@ public class Account {
     BigDecimal balance;//余额
     BigDecimal ubalance;//美元余额
     BigDecimal lbalance;//昨日余额
-
+    String time;
 
     String accountno;//账号后4位
     String bankname;//银行名称
@@ -74,5 +74,11 @@ public class Account {
         this.details = details;
     }
 
+    public String getTime() {
+        return time;
+    }
 
+    public void setTime(String time) {
+        this.time = time;
+    }
 }
