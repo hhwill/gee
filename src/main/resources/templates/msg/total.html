@@ -11,117 +11,144 @@
             padding: 0;
         }
         .total{
-            background: #4e6ef2;
+            background: #01b0f0;
         }
         .total_t{
-            height: 80px;
-            padding: 15px 0;
+            height: 120px;
             box-sizing: border-box;
         }
         .total_t .total_t_l{
-            width: 45%;
+            width: 50%;
             box-sizing: border-box;
-            height: 50px;
+            height: 120px;
             display: block;
             float: left;
-            padding: 0 20px;
-            line-height: 25px;
-            font-size: 16px;
+            line-height: 160px;
+            text-align: center;
+            font-size: 30px;
             color: #fff;
+            background: #ff2d2d;
         }
         .total_t .total_t_r{
-            width: 55%;
+            width: 50%;
             box-sizing: border-box;
-            height: 50px;
+            height: 120px;
             display: block;
             float: right;
-            padding: 0 20px;
-            line-height: 50px;
             font-size: 12px;
-            text-align: right;
+            text-align: center;
             color: #fff;
         }
-        .total_b{
-            height: 60px;
+        .total_t .total_t_r #date{
+            height: 80px;
+            line-height: 120px;
+            font-size: 20px;
         }
-        .total_b p{
-            line-height: 30px;
-            padding: 0 20px;
-            font-size: 14px;
-            color: #a9a9a9;
+        .total_t .total_t_r #time{
+            height: 40px;
+            line-height: 40px;
+            font-size: 20px;
+        }
+        .total_b{
+            height: 80px;
             box-sizing: border-box;
+            padding: 0 20px;
+        }
+        .total_b .pDiv{
+            width: 50%;
+            float: left;
+            height: 80px;
+            box-sizing: border-box;
+        }
+        .total_b .pDiv p{
+            height: 40px;
+            display: block;
+            line-height: 40px;
+            font-size: 14px;
+            color: #fff;
+            text-align: right;
+            box-sizing: border-box;
+        }
+        .total_b .pDiv p:last-child{
+            float: right;
+            text-align: right;
         }
         .ulList{
             list-style: none;
         }
         .ulList li:nth-of-type(odd){
-            height: 60px;
+            height: 80px;
             display: block;
             box-sizing: border-box;
             padding: 0 20px;
-            background: #fff;
+            background: #f8cbad;
         }
         .ulList li:nth-of-type(even){
-            height: 60px;
+            height: 80px;
             display: block;
             box-sizing: border-box;
             padding: 0 20px;
-            background: #f5f5f5;
+            background: #f4b084;
         }
-        .ulList li .list_l{
-            width: 30%;
-            height: 60px;
-            display: block;
+        .ulList li .ulList_t {
+            width: 50%;
+            height: 80px;
             float: left;
-            line-height: 30px;
+            text-align: center;
             font-size: 14px;
-            color: #666;
+            color: #333;
         }
-        .ulList li .list_r{
-            width: 65%;
-            height: 60px;
+        .ulList li .ulList_t p{
             display: block;
-            float: right;
-            line-height: 30px;
-            font-size: 14px;
-            color: #666;
+            line-height: 40px;
+            height: 40px;
         }
-        .ulList li .list_r span{
-            width: 100%;
-            height: 30px;
-            display: inline-block;
-            line-height: 30px;
-            font-size: 14px;
-            color: #999;
+        .ulList li .ulList_b {
+            width: 50%;
+            height: 80px;
+            line-height: 80px;
+            float: left;
             text-align: right;
+            font-size: 14px;
+            color: #333;
         }
     </style>
 </head>
 <body>
 <div class="total">
     <div class="total_t">
-        <p class="total_t_l">当前总余额<br>Total Balance Now</p>
-        <p class="total_t_r" id="date"></p>
+        <p class="total_t_l">丰田金融</p>
+        <div class="total_t_r">
+            <p id="date">2021/01/14</p>
+            <p id="time">09：33AM</p>
+        </div>
     </div>
     <div class="total_b">
-        <p id="total_cny_amount"></p>
-        <p id="total_usd_amount"></p>
+        <div class="pDiv">
+            <p>CNY</p>
+            <p>USD</p>
+        </div>
+        <div class="pDiv">
+            <p id="total_cny_amount">235,000</p>
+            <p id="total_usd_amount">123,000</p>
+        </div>
     </div>
 </div>
 <ul class="ulList" id="li_accounts">
-    <!--<li>-->
-        <!--<p class="list_l">工商银行<br>ICBC</p>-->
-        <!--<p class="list_r" onclick="goAccount('111')">-->
-            <!--<span>CNY:1,234,567</span>-->
-            <!--<span>USD: 3,567</span>-->
-        <!--</p>-->
-    <!--</li>-->
-    <!--<li>-->
-        <!--<p class="list_l">工商银行<br>ICBC</p>-->
-        <!--<p class="list_r">-->
-            <!--<span>CNY:1,234,567</span>-->
-        <!--</p>-->
-    <!--</li>-->
+    <li>
+        <div class="ulList_t">
+            <p>农业银行</p>
+            <p>ABC</p>
+        </div>
+        <div class="ulList_b">123,456</div>
+    </li>
+    <li>
+        <div class="ulList_t">
+            <p>工商银行</p>
+            <p>ICBC</p>
+        </div>
+        <div class="ulList_b">123,456</div>
+    </li>
 </ul>
 </body>
 
@@ -161,6 +188,7 @@
             accountsHtml += "</p>";
             accountsHtml += "</li>";
         }
+        return
         $("#li_accounts").html(accountsHtml);
     });
 
