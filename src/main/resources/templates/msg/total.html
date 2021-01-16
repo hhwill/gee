@@ -169,10 +169,19 @@
     $.post("/gee/msg/total.json", function(data) {
         console.log(data);
         var res = data.result;
+        console.log(res)
 
-        $("#total_cny_amount").html("Total CNY Amount: " + res.balance);
-        $("#total_usd_amount").html("Total USD Amount: " + res.ubalance);
-        $("#date").html(res.time);
+        $("#total_cny_amount").html(res.balance);
+        $("#total_usd_amount").html(res.ubalance);
+        $("#date").html(res.time.split(" ")[0]);
+        var time  = res.time.split(" ")[1]
+        var hours = Number(time.split(":")[0])
+
+        if(hours > 12){
+            $("#time").html(time + " PM")
+        }else{
+            $("#time").html(time + " AM")
+        }
 
         var accounts = res.accounts;
         var accountsHtml= "";
@@ -180,15 +189,24 @@
         for (var i=0;i<accounts.length;i++) {
             var account = accounts[i];
 
+            var bankname1 = ""
+
+            if(account.bankname == "中国银行"){
+                bankname1 = "BOC"
+            }else if(account.bankname == "工商银行"){
+                bankname1 = "ICBC"
+            }else if(account.bankname == "建设银行"){
+                bankname1 = "CCB"
+            }
+
             accountsHtml += "<li>";
-            accountsHtml += "<p class=\"list_l\" id='"+account.accountId+"' onclick='goAccount(this)'>"+account.bankname+"</p>";
-            accountsHtml += "<p class=\"list_r\">";
-            accountsHtml += "<span>CNY:"+account.balance+"</span>";
-            accountsHtml += "<span>USD:"+account.ubalance+"</span>";
-            accountsHtml += "</p>";
+            accountsHtml += "<div class=\"ulList_t\" id='"+account.accountId+"' onclick='goAccount(this)'>";
+            accountsHtml += "<p>"+account.bankname+"</p>"
+            accountsHtml += "<p>"+bankname1+"</p>"
+            accountsHtml += "</div>"
+            accountsHtml += "<div class=\"ulList_b\">"+account.balance+"</div>";
             accountsHtml += "</li>";
         }
-        return
         $("#li_accounts").html(accountsHtml);
     });
 

@@ -151,6 +151,9 @@
             display: block;
             line-height: 40px;
             height: 40px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
         }
         .ulList1 li .ulList1_b {
             width: 50%;
@@ -210,17 +213,17 @@
 <ul class="ulList">
     <li style="background: #2f75b5">
         <div class="list_l" id="bankname">
-            <p>工商银行</p>
-            <p>ICBC</p>
+            <p class="bankname">工商银行</p>
+            <p class="bankname1">ICBC</p>
         </div>
-        <div class="list_r">400,000,000</div>
+        <div class="list_r balance">400,000,000</div>
     </li>
     <li style="background: #9bc2e6">
         <div class="list_l" >
             <p>昨日余额</p>
             <p>Day End Balance</p>
         </div>
-        <div class="list_r">350,000,000</div>
+        <div class="list_r ebalance">350,000,000</div>
     </li>
 </ul>
 <ul class="ulList1" id = "li_details">
@@ -262,13 +265,40 @@
     }, function(result) {
         console.log(result)
         var res  = result.result;
+//        $("#total_cny_amount").html(res.balance);
+//        $("#total_usd_amount").html(res.ubalance);
+//        $("#bankname").html(res.bankname);
+//        $("#total_cny_amount2").html("CNY:"+res.balance);
+//        $("#total_usd_amount2").html("USD:"+res.ubalance);
+//        $("#total_cny_amount3").html("CNY:"+res.lbalance);
+//        $("#date").html(res.time);
+
         $("#total_cny_amount").html(res.balance);
         $("#total_usd_amount").html(res.ubalance);
-        $("#bankname").html(res.bankname);
-        $("#total_cny_amount2").html("CNY:"+res.balance);
-        $("#total_usd_amount2").html("USD:"+res.ubalance);
-        $("#total_cny_amount3").html("CNY:"+res.lbalance);
-        $("#date").html(res.time);
+        $("#date").html(res.time.split(" ")[0]);
+        var time  = res.time.split(" ")[1]
+        var hours = Number(time.split(":")[0])
+
+        if(hours > 12){
+            $("#time").html(time + " PM")
+        }else{
+            $("#time").html(time + " AM")
+        }
+
+        var bankname1 = ""
+
+        if(res.bankname == "中国银行"){
+            bankname1 = "BOC"
+        }else if(res.bankname == "工商银行"){
+            bankname1 = "ICBC"
+        }else if(res.bankname == "建设银行"){
+            bankname1 = "CCB"
+        }
+        $(".bankname").html(res.bankname)
+        $(".bankname1").html(bankname1)
+
+        $(".balance").html(res.balance)
+        $(".ebalance").html(res.lbalance)
 
 
         var details = res.details;
@@ -276,21 +306,14 @@
 
         for (var i=0;i<details.length;i++) {
             var detail = details[i];
-
             detailsHtml += "<li>";
-            detailsHtml += "<div>";
-            detailsHtml += "<p>付款人</p>";
-            detailsHtml += "<p>付款时间</p>";
-            detailsHtml += "<p>金额</p>";
-            detailsHtml += "</div>";
-            detailsHtml += "<div>";
+            detailsHtml += "<div class='ulList1_t'>";
             detailsHtml += "<p>"+detail.opp+"</p>";
             detailsHtml += "<p>"+detail.time+"</p>";
-            detailsHtml += "<p>"+detail.amount+"</p>";
             detailsHtml += "</div>";
+            detailsHtml += "<div class='ulList1_b'>"+detail.amount+"</div>";
             detailsHtml += "</li>";
         }
-        return
 
         $("#li_details").html(detailsHtml);
 
